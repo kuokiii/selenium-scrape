@@ -1,5 +1,5 @@
 import { Builder, type WebDriver, By } from "selenium-webdriver"
-import chrome from "selenium-webdriver/chrome"
+import { Options as ChromeOptions } from "selenium-webdriver/chrome"
 import UserAgent from "user-agents"
 import { ContentExtractor, type ExtractedContent } from "./content-extractor" // Assuming ContentExtractor is defined in another file
 
@@ -65,7 +65,7 @@ export class SeleniumScraper {
   }
 
   async initDriver(): Promise<void> {
-    const options = new chrome.Options()
+    const options = new ChromeOptions()
     const viewport = AntiDetectionUtils.getRandomViewport()
 
     if (this.config.bypassAntiBot) {
