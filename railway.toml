@@ -1,11 +1,14 @@
 [build]
 builder = "dockerfile"
+buildCommand = "echo 'Building with Docker'"
 
 [deploy]
-startCommand = "npm start"
+startCommand = "node server.js"
 restartPolicyType = "always"
 healthcheckPath = "/api/health"
 healthcheckTimeout = 300
+memoryLimit = "2Gi"
+cpuLimit = "1000m"
 
 [env]
 NODE_ENV = "production"
@@ -14,3 +17,4 @@ PUPPETEER_EXECUTABLE_PATH = "/usr/bin/chromium-browser"
 CHROME_BIN = "/usr/bin/chromium-browser"
 CHROME_PATH = "/usr/bin/chromium-browser"
 DISPLAY = ":99"
+CHROME_FLAGS = "--no-sandbox --disable-setuid-sandbox --disable-dev-shm-usage --disable-gpu --no-first-run --no-zygote --single-process"
