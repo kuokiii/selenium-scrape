@@ -27,7 +27,7 @@ ENV NODE_ENV production
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-// Puppeteer will use its bundled Chromium instead
+# Puppeteer will use its bundled Chromium instead
 
 COPY --from=builder /app/public ./public
 
