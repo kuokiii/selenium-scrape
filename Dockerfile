@@ -6,8 +6,8 @@ RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
 # Install dependencies based on the preferred package manager
-COPY package.json package-lock.json* ./
-RUN npm ci --legacy-peer-deps --only=production
+COPY package.json ./
+RUN npm install --omit=dev
 
 # Rebuild the source code only when needed
 FROM base AS builder
@@ -15,7 +15,7 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=false
 RUN npm run build
 
 # Production image, copy all the files and run next
@@ -27,21 +27,7 @@ ENV NODE_ENV production
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-RUN apk add --no-cache \
-    chromium \
-    nss \
-    freetype \
-    harfbuzz \
-    ca-certificates \
-    ttf-freefont \
-    && rm -rf /var/cache/apk/* \
-    && mkdir -p /tmp/.X11-unix \
-    && chmod 1777 /tmp/.X11-unix
-
-ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
-    PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser \
-    CHROME_BIN=/usr/bin/chromium-browser \
-    DISPLAY=:99
+// Puppeteer will use its bundled Chromium instead
 
 COPY --from=builder /app/public ./public
 
