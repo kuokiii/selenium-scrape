@@ -149,7 +149,7 @@ export class SeleniumScraper {
     this.driver = await new Builder().forBrowser("chrome").setChromeOptions(options).build()
 
     if (this.config.bypassAntiBot && this.driver) {
-      await this.driver.executeScript(`
+      await this.driver.executeScript
         // Remove webdriver property
         Object.defineProperty(navigator, 'webdriver', {
           get: () => undefined,
@@ -248,7 +248,7 @@ export class SeleniumScraper {
         Object.defineProperty(navigator, 'deviceMemory', {
           get: () => 8
         });
-      `)
+    )
 
       if (this.config.humanBehavior) {
         await this.simulateHumanBehavior()
@@ -261,7 +261,7 @@ export class SeleniumScraper {
 
     try {
       // Random mouse movements
-      await this.driver.executeScript(`
+      await this.driver.executeScript(
         function randomMouseMove() {
           const event = new MouseEvent('mousemove', {
             clientX: Math.random() * window.innerWidth,
@@ -275,10 +275,10 @@ export class SeleniumScraper {
         for(let i = 0; i < 3; i++) {
           setTimeout(randomMouseMove, Math.random() * 1000);
         }
-      `)
+    )
 
       // Random scroll behavior
-      await this.driver.executeScript(`
+      await this.driver.executeScript(
         function humanScroll() {
           const scrollAmount = Math.random() * 200 + 50;
           window.scrollBy(0, scrollAmount);
@@ -287,7 +287,7 @@ export class SeleniumScraper {
           }, Math.random() * 500 + 200);
         }
         humanScroll();
-      `)
+    )
 
       await this.driver.sleep(AntiDetectionUtils.getRandomDelay(500, 1500))
     } catch (error) {
@@ -389,7 +389,7 @@ export class SeleniumScraper {
   private async scrollToBottom(): Promise<void> {
     if (!this.driver) return
 
-    await this.driver.executeScript(`
+    await this.driver.executeScript
       return new Promise((resolve) => {
         let totalHeight = 0;
         const distance = Math.random() * 150 + 50; // Random scroll distance
@@ -413,7 +413,7 @@ export class SeleniumScraper {
           }
         }, Math.random() * 200 + 100); // Random scroll timing
       });
-    `)
+    )
   }
 
   private async extractText(): Promise<string> {
