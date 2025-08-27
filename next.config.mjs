@@ -5,7 +5,7 @@ const nextConfig = {
   
   // Optimize for production deployment
   experimental: {
-    serverComponentsExternalPackages: ['selenium-webdriver', 'chrome-aws-lambda']
+    serverComponentsExternalPackages: ['selenium-webdriver', 'puppeteer']
   },
   
   // Configure headers for security
@@ -34,7 +34,7 @@ const nextConfig = {
   // Webpack configuration for external packages
   webpack: (config, { isServer }) => {
     if (isServer) {
-      config.externals.push('selenium-webdriver')
+      config.externals.push('selenium-webdriver', 'puppeteer')
     }
     return config
   },
