@@ -670,7 +670,6 @@ export class ContentExtractor {
       const emails = bodyText.match(emailRegex) || []
       contactInfo.emails = [...new Set(emails)]
 
-      // Extract phone numbers
       const phoneRegex = /(\+?1?[-.\s]?)?$$?([0-9]{3})$$?[-.\s]?([0-9]{3})[-.\s]?([0-9]{4})/g
       const phones = bodyText.match(phoneRegex) || []
       contactInfo.phones = [...new Set(phones)]
