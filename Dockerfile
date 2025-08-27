@@ -7,7 +7,7 @@ WORKDIR /app
 
 # Install dependencies based on the preferred package manager
 COPY package.json package-lock.json* ./
-RUN npm ci
+RUN npm ci --legacy-peer-deps --only=production
 
 # Rebuild the source code only when needed
 FROM base AS builder
@@ -15,7 +15,7 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Build the application
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 RUN npm run build
 
 # Production image, copy all the files and run next
@@ -29,27 +29,19 @@ RUN adduser --system --uid 1001 nextjs
 
 RUN apk add --no-cache \
     chromium \
-    chromium-chromedriver \
     nss \
     freetype \
-    freetype-dev \
     harfbuzz \
     ca-certificates \
     ttf-freefont \
-    ttf-dejavu \
-    ttf-droid \
-    ttf-liberation \
-    fontconfig \
     && rm -rf /var/cache/apk/* \
-    && fc-cache -f
+    && mkdir -p /tmp/.X11-unix \
+    && chmod 1777 /tmp/.X11-unix
 
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
     PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser \
     CHROME_BIN=/usr/bin/chromium-browser \
-    CHROME_PATH=/usr/bin/chromium-browser \
-    DISPLAY=:99 \
-    RAILWAY_STATIC_URL="" \
-    RAILWAY_PUBLIC_DOMAIN=""
+    DISPLAY=:99
 
 COPY --from=builder /app/public ./public
 
