@@ -3,10 +3,7 @@ const nextConfig = {
   // Enable standalone output for Docker deployment
   output: 'standalone',
   
-  // Optimize for production deployment
-  experimental: {
-    serverComponentsExternalPackages: ['selenium-webdriver', 'puppeteer']
-  },
+  serverExternalPackages: ['selenium-webdriver', 'puppeteer'],
   
   // Configure headers for security
   async headers() {
